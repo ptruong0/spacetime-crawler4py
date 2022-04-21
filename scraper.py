@@ -1,5 +1,6 @@
 import re
 from urllib.parse import urlparse
+from bs4 import BeautifulSoup
 
 def scraper(url, resp):
     links = extract_next_links(url, resp)
@@ -14,8 +15,37 @@ def extract_next_links(url, resp):
     # resp.raw_response: this is where the page actually is. More specifically, the raw_response has two parts:
     #         resp.raw_response.url: the url, again
     #         resp.raw_response.content: the content of the page!
+
+    scrapedURLs = []
+    if resp.status == 200:
+        soup = BeautifulSoup(resp.raw_response.content, "lxml")
+
+        for link in soup.find_all('a'):
+            pageURL = link.get('href')
+
+            # duplicate URL
+            if pageURL == resp.raw_response.url:
+                continue
+
+            # remove fragment
+            pageURL = urlparse.urldefrag(pageURL)[0]
+
+            # duplicate URL
+            if pageURL == resp.raw_response.url:
+                continue
+
+            # for relative paths, convert back to absolute paths
+            if not pageURL.startswith('http') and not pageURL.startswith('https'):
+                urlParts = urlparse(resp.raw_response.url)
+                pageURL = urlParts.scheme + urlParts.netloc + pageURL
+
+            scrapedURLs.append(pageURL)
+    else:
+        return []
+    print(scrapedURLs)
+
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
-    return list()
+    return scrapedURLs
 
 def is_valid(url):
     # Decide whether to crawl this url or not. 
@@ -25,6 +55,15 @@ def is_valid(url):
         parsed = urlparse(url)
         if parsed.scheme not in set(["http", "https"]):
             return False
+
+        # check 
+        if not (parsed.netloc.endswith('.ics.uci.edu')) and \
+            not (parsed.netloc.endswith('.cs.uci.edu')) and \
+                not (parsed.netloc.endswith('.informatics.uci.edu')) and \
+                    not (parsed.netloc.endswith('.stat.uci.edu')) and \
+                        not (parsed.netloc == 'today.uci.edu' and parsed.path.startswith('/department/information_computer_sciences/')):
+            return False
+
         return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
             + r"|png|tiff?|mid|mp2|mp3|mp4"
