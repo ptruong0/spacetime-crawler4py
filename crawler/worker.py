@@ -18,9 +18,9 @@ class Worker(Thread):
         self.frontier = frontier
         self.reporter = reporter
 
-        self.similar_count = 0
-        self.prev_url = ''
-        self.bad_url = True
+        self.similar_count = 0      # counts number of subsequent URLs in the frontier
+        self.prev_url = ''          # keep track of previous crawled URL to detect similarities
+        self.bad_url = True         # keep track of URLs which give a non-200 status code
 
         # basic check for requests in scraper
         assert {getsource(scraper).find(req) for req in {"from requests import", "import requests"}} == {-1}, "Do not use requests from scraper.py"
@@ -34,13 +34,18 @@ class Worker(Thread):
                 break
             parsed = urlparse(tbd_url)
             print('Scraping', tbd_url)
+
+            # this subdomain caused many problems - error codes, takes too long, no useful page content
+            if parsed.netloc == 'swiki.ics.uci.edu':
+                self.reporter.addPage(tbd_url)
+                continue
             
-            # don't crawl too many similar URL's subsequently, gets stuck
+            # don't crawl too many similar URL's subsequently, to avoid loops
             if scraper.mostlySimilar(tbd_url, self.prev_url):
                 print('similar:', self.similar_count)
                 self.prev_url = tbd_url
                 self.similar_count += 1
-                if self.similar_count > 20:
+                if self.similar_count > 10:
                     self.reporter.addPage(tbd_url)
                     continue
                 
@@ -70,15 +75,16 @@ class Worker(Thread):
             if robotsResp.status_code == 200:
                 hasRobots = True
 
+            # scrape URLs from webpage, also get page contents
             scraped_urls, page_text = scraper.scraper(tbd_url, resp, robots=hasRobots)
             self.reporter.collect_data(tbd_url, page_text)
 
-            print(scraped_urls)
-
+            # add scraped URLs to frontier
             for scraped_url in scraped_urls:
                 self.frontier.add_url(scraped_url)
             self.frontier.mark_url_complete(tbd_url)
             time.sleep(self.config.time_delay)
         
+        # report statistics when finished
         self.reporter.writeReport()
 

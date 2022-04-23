@@ -11,15 +11,17 @@ def scraper(url, resp, robots=False):
     return ([link for link in links if is_valid(link)], text)
 
 def mostlySimilar(a, b):
+    ''' Returns true if (1) the two URL's share the same scheme, domain, and path, or (2) if they are 95% textually similar '''
     aParsed = urlparse(a)
     bParsed = urlparse(b)
 
     # if all matching except query
     return (aParsed.scheme == bParsed.scheme and aParsed.netloc == bParsed.netloc and aParsed.path == bParsed.path) or \
-        (SequenceMatcher(None, a, b).ratio() > 0.95)
+        (SequenceMatcher(None, a, b).ratio() >= 0.95)
         
         
 def tokenFrequencies(text: str, freq: dict) -> dict:
+    ''' Counts occurrences of words in the text and records their frequencies. Returns number of words in the text. '''
     if len(text) == 0: 
         return 0
 
@@ -35,6 +37,7 @@ def tokenFrequencies(text: str, freq: dict) -> dict:
             numWords += 1
 
     return numWords
+
 
 def extract_next_links(url, resp, hasRobots):
     # Implementation required.
@@ -54,7 +57,7 @@ def extract_next_links(url, resp, hasRobots):
         # create robots file parser if the site has a robots.txt file
         rfp = None
         if hasRobots:
-            print('HAS ROBOTS.TXT')
+            print('HAS ROBOTS.TXT', parentURL.scheme + '://' + parentURL.netloc + '/robots.txt')
             rfp = urllib.robotparser.RobotFileParser()
             rfp.set_url(parentURL.scheme + '://' + parentURL.netloc + '/robots.txt')
             rfp.read()
@@ -87,7 +90,7 @@ def extract_next_links(url, resp, hasRobots):
             if pageURL == urldefrag(resp.raw_response.url).url:
                 continue
 
-            # crawling not allowed in robots.txt
+            # check if crawling is allowed in robots.txt
             if rfp != None and not rfp.can_fetch('*', pageURL):
                 print('NO PERMISSIONS')
                 continue
@@ -128,12 +131,12 @@ def is_valid(url):
                         not (parsed.netloc == 'today.uci.edu' and parsed.path.startswith('/department/information_computer_sciences/')):
             return False
 
-        # check if not a calendar file
-        if 'ical' in parsed.query:
+        # skip media files and social media redirect
+        if any(suffix in parsed.query for suffix in ['ical', 'png', 'jpg', 'gif', 'pdf', 'facebook', 'twitter']):
             return False
 
-        # check if too many query strings (tend to give little info)
-        if len(parse_qsl(parsed.query)) > 8:
+        # check if too many query strings (these pages tend to be too specific, give little info)
+        if len(parse_qsl(parsed.query)) > 5:
             return False
 
         return not re.match(
