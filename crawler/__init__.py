@@ -12,7 +12,7 @@ class Crawler(object):
         self.frontier = frontier_factory(config, restart)
         self.workers = list()
         self.worker_factory = worker_factory
-        self.reporter = Reporter()
+        self.reporter = Reporter(restart)
 
         nltk.download('punkt')
 

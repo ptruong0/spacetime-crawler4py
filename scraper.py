@@ -105,7 +105,8 @@ def extract_next_links(url, resp, hasRobots):
         return ([], '')
 
     # prioritize links from a different domain
-    scrapedURLs.sort(key=(lambda u: urlparse(u).netloc == parentURL.netloc))
+    # secondarily, prioritize short links (tend to give more info)
+    scrapedURLs.sort(key=(lambda u: (urlparse(u).netloc == parentURL.netloc, len(u))))
 
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
     return (scrapedURLs, pageText)

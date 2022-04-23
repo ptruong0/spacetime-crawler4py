@@ -19,7 +19,7 @@ class Worker(Thread):
         self.reporter = reporter
 
         self.similar_count = 0
-        self.working_url = ''
+        self.prev_url = ''
         self.bad_url = True
 
         # basic check for requests in scraper
@@ -34,22 +34,23 @@ class Worker(Thread):
                 break
             parsed = urlparse(tbd_url)
             print('Scraping', tbd_url)
-            print(parsed.scheme, parsed.netloc, parsed.path, parsed.query, parsed.fragment)
             
             # don't crawl too many similar URL's subsequently, gets stuck
-            if scraper.mostlySimilar(tbd_url, self.working_url):
+            if scraper.mostlySimilar(tbd_url, self.prev_url):
                 print('similar:', self.similar_count)
+                self.prev_url = tbd_url
+                self.similar_count += 1
                 if self.similar_count > 20:
-                    self.reporter.addPage()
+                    self.reporter.addPage(tbd_url)
                     continue
-                else:
-                    self.similar_count += 1
-                    
+                
                 # avoid URL's that gave download errors on previous crawls
                 if self.bad_url:
                     continue
             else:
                 self.similar_count = 0      # different URL, reset count
+            
+            self.prev_url = tbd_url
 
             # download URL
             resp = download(tbd_url, self.config, self.logger)
@@ -57,7 +58,7 @@ class Worker(Thread):
                 f"Downloaded {tbd_url}, status <{resp.status}>, "
                 f"using cache {self.config.cache_server}.")
             if resp.status != 200:
-                self.working_url = tbd_url
+                print(tbd_url, 'gave error code', resp.status)
                 self.bad_url = True
                 continue
             else:
@@ -73,12 +74,11 @@ class Worker(Thread):
             self.reporter.collect_data(tbd_url, page_text)
 
             print(scraped_urls)
-            self.working_url = tbd_url
 
             for scraped_url in scraped_urls:
                 self.frontier.add_url(scraped_url)
             self.frontier.mark_url_complete(tbd_url)
             time.sleep(self.config.time_delay)
         
-        self.reporter.report()
+        self.reporter.writeReport()
 
