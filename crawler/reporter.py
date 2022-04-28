@@ -53,14 +53,14 @@ class Reporter(object):
         print(parsed.scheme + '://' + parsed.netloc, self.stats['icsSubdomains'][parsed.scheme + '://' + parsed.netloc])
 
 
-  def collect_data(self, tbd_url, page_text):
+  def collect_data(self, tbd_url, wordCount):
     ''' Called for every crawled URL, collecting data about the page for the report:
         page count, word frequencies, page length in words, ics.uci.edu subdomains '''
     self.addPage(tbd_url)
     print(self.stats['page_count'])
 
     # tokenize page text and count frequencies
-    wordCount = scraper.tokenFrequencies(page_text, self.all_freq)
+    # wordCount = scraper.tokenFrequencies(page_text, self.all_freq)
     # check if longest page yet
     print('page size in words:', wordCount)
     if wordCount > self.stats['longest_page_words']:

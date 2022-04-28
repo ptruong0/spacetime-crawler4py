@@ -38,19 +38,23 @@ class Worker(Thread):
             # this subdomain caused many problems - error codes, takes too long, no useful page content
             if parsed.netloc == 'swiki.ics.uci.edu':
                 self.reporter.addPage(tbd_url)
+                self.frontier.mark_url_complete(tbd_url)
                 continue
             
             # don't crawl too many similar URL's subsequently, to avoid loops
-            if scraper.mostlySimilar(tbd_url, self.prev_url):
+            # too many URL's with dates in a row tend to have little info
+            if scraper.mostlySimilar(tbd_url, self.prev_url) or scraper.containsDate(tbd_url):
                 print('similar:', self.similar_count)
                 self.prev_url = tbd_url
                 self.similar_count += 1
                 if self.similar_count > 10:
                     self.reporter.addPage(tbd_url)
+                    self.frontier.mark_url_complete(tbd_url)
                     continue
                 
                 # avoid URL's that gave download errors on previous crawls
                 if self.bad_url:
+                    self.frontier.mark_url_complete(tbd_url)
                     continue
             else:
                 self.similar_count = 0      # different URL, reset count
@@ -65,19 +69,26 @@ class Worker(Thread):
             if resp.status != 200:
                 print(tbd_url, 'gave error code', resp.status)
                 self.bad_url = True
+                self.frontier.mark_url_complete(tbd_url)
                 continue
             else:
                 self.bad_url = False
 
             # check if site has a robots.txt file
             hasRobots = False
-            robotsResp = requests.get(parsed.scheme + '://' + parsed.netloc + '/robots.txt')
-            if robotsResp.status_code == 200:
-                hasRobots = True
+            try:
+                robotsResp = requests.get(parsed.scheme + '://' + parsed.netloc + '/robots.txt')
+                if robotsResp.status_code == 200:
+                    hasRobots = True
+            except :
+                print('connection refused')
+                time.sleep(2)
+                self.frontier.mark_url_complete(tbd_url)
+                continue
 
             # scrape URLs from webpage, also get page contents
-            scraped_urls, page_text = scraper.scraper(tbd_url, resp, robots=hasRobots)
-            self.reporter.collect_data(tbd_url, page_text)
+            scraped_urls, word_count = scraper.scraper(tbd_url, resp, self.reporter.all_freq, robots=hasRobots)
+            self.reporter.collect_data(tbd_url, word_count)
 
             # add scraped URLs to frontier
             for scraped_url in scraped_urls:
