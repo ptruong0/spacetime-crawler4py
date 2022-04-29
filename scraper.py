@@ -105,7 +105,7 @@ def extract_next_links(url, resp, allFreq, hasRobots):
                 return ([],  0)
 
             # don't parse extremely large files or extremely small files
-            if numWords > 10000:
+            if numWords > 10000 or numWords < 50:
                 return([], 0)
 
             # find every link on the page
