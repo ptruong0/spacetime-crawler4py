@@ -36,10 +36,10 @@ class Worker(Thread):
             print('Scraping', tbd_url)
 
             # this subdomain caused many problems - error codes, takes too long, no useful page content
-            if parsed.netloc == 'swiki.ics.uci.edu':
-                self.reporter.addPage(tbd_url)
-                self.frontier.mark_url_complete(tbd_url)
-                continue
+            # if parsed.netloc == 'swiki.ics.uci.edu':
+            #     self.reporter.addPage(tbd_url)
+            #     self.frontier.mark_url_complete(tbd_url)
+            #     continue
             
             # don't crawl too many similar URL's subsequently, to avoid loops
             # too many URL's with dates in a row tend to have little info
@@ -88,7 +88,8 @@ class Worker(Thread):
 
             # scrape URLs from webpage, also get page contents
             scraped_urls, word_count = scraper.scraper(tbd_url, resp, self.reporter.all_freq, robots=hasRobots)
-            self.reporter.collect_data(tbd_url, word_count)
+            if word_count >= 0:
+                self.reporter.collect_data(tbd_url, word_count)
 
             # add scraped URLs to frontier
             for scraped_url in scraped_urls:

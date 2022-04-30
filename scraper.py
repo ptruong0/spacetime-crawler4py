@@ -78,6 +78,12 @@ def extract_next_links(url, resp, allFreq, hasRobots):
         if resp.status == 200:
             parentURL = urlparse(resp.raw_response.url)
 
+            # skip files that are too large in bytes (greater than 3 MB)
+            print('page size in bytes:', len(resp.raw_response.content))
+            if len(resp.raw_response.content) > 3000000:
+                print('PAGE TOO LARGE')
+                return([], 0)
+
             # create robots file parser if the site has a robots.txt file
             rfp = None
             if hasRobots:
@@ -105,7 +111,7 @@ def extract_next_links(url, resp, allFreq, hasRobots):
                 return ([],  0)
 
             # don't parse extremely large files or extremely small files
-            if numWords > 10000 or numWords < 50:
+            if numWords > 50000 or numWords < 50:
                 return([], 0)
 
             # find every link on the page
@@ -139,7 +145,7 @@ def extract_next_links(url, resp, allFreq, hasRobots):
                 # add url to list
                 scrapedURLs.append(pageURL)
         else:
-            return ([], 0)
+            return ([], -1)
 
 
         # prioritize links from a different domain
@@ -148,7 +154,7 @@ def extract_next_links(url, resp, allFreq, hasRobots):
 
     except:
         print('ERROR CAUGHT, SKIP PAGE')
-        return ([], 0)
+        return ([], -1)
 
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
     return (scrapedURLs, numWords)
@@ -171,7 +177,7 @@ def is_valid(url):
             return False
 
         # skip media files, social media redirects, search/filter results
-        if any(suffix in parsed.query for suffix in ['ical', 'png', 'jpg', 'gif', 'pdf', 'facebook', 'zip','twitter', 'difftype', 'filter', 'odc']) or url.endswith('.Z'):
+        if any(suffix in parsed.query for suffix in ['ical', 'png', 'jpg', 'gif', 'pdf', 'facebook', 'zip','twitter', 'difftype', 'filter', 'odc', 'replyto']) or url.endswith('.Z'):
             return False
 
         # check if too many query strings (these pages tend to be too specific, give little info)

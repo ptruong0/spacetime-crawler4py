@@ -1,0 +1,174 @@
+---------------------------
+Unique pages: 14022
+---------------------------
+Longest page: https://www.informatics.uci.edu/explore/books-we-have-written
+	had 9941 words
+---------------------------
+Most common words:
+research
+says
+reply
+computer
+science
+ics
+student
+informatics
+graduate
+students
+information
+software
+news
+uci
+undergraduate
+data
+pm
+learning
+events
+school
+us
+june
+bren
+august
+alumni
+may
+faculty
+september
+october
+projects
+july
+policies
+engineering
+view
+contact
+donald
+people
+systems
+irvine
+design
+april
+university
+new
+march
+machine
+spotlights
+statistics
+support
+computing
+academic
+---------------------------
+Subdomains in ics.uci.edu:
+http://archive.ics.uci.edu, 2
+http://asterix.ics.uci.edu, 6
+http://cert.ics.uci.edu, 3
+http://cml.ics.uci.edu, 1
+http://code.ics.uci.edu, 1
+http://computableplant.ics.uci.edu, 34
+http://cradl.ics.uci.edu, 5
+http://cwicsocal18.ics.uci.edu, 3
+http://dejavu.ics.uci.edu, 1
+http://duttgroup.ics.uci.edu, 1
+http://dynamo.ics.uci.edu, 1
+http://elms.ics.uci.edu, 1
+http://emj.ics.uci.edu, 2
+http://esl.ics.uci.edu, 2
+http://flamingo.ics.uci.edu, 12
+http://fr.ics.uci.edu, 2
+http://futurehealth.ics.uci.edu, 3
+http://graphics.ics.uci.edu, 3
+http://graphmod.ics.uci.edu, 1
+http://hai.ics.uci.edu, 2
+http://hobbes.ics.uci.edu, 1
+http://i-sensorium.ics.uci.edu, 1
+http://iasl.ics.uci.edu, 13
+http://informatics.ics.uci.edu, 1
+http://ipubmed.ics.uci.edu, 1
+http://isg.ics.uci.edu, 2
+http://keys.ics.uci.edu, 1
+http://luci.ics.uci.edu, 1
+http://mcs.ics.uci.edu, 2
+http://mhcid.ics.uci.edu, 3
+http://mondego.ics.uci.edu, 2
+http://nalini.ics.uci.edu, 1
+http://ngs.ics.uci.edu, 10
+http://perennialpolycultures.ics.uci.edu, 1
+http://plrg.ics.uci.edu, 14
+http://psearch.ics.uci.edu, 1
+http://radicle.ics.uci.edu, 1
+http://riscit.ics.uci.edu, 1
+http://sconce.ics.uci.edu, 1
+http://sdcl.ics.uci.edu, 204
+http://seal.ics.uci.edu, 5
+http://sherlock.ics.uci.edu, 7
+http://sli.ics.uci.edu, 59
+http://sourcerer.ics.uci.edu, 1
+http://sprout.ics.uci.edu, 2
+http://stairs.ics.uci.edu, 4
+http://tastier.ics.uci.edu, 1
+http://tippersweb.ics.uci.edu, 1
+http://tutors.ics.uci.edu, 44
+http://vision.ics.uci.edu, 200
+http://wics.ics.uci.edu, 9
+http://www-db.ics.uci.edu, 11
+http://www.cert.ics.uci.edu, 1
+http://www.graphics.ics.uci.edu, 1
+http://www.ics.uci.edu, 961
+http://www.informatics.ics.uci.edu, 1
+http://xtune.ics.uci.edu, 6
+https://Transformativeplay.ics.uci.edu, 1
+https://accessibility.ics.uci.edu, 1
+https://acoi.ics.uci.edu, 56
+https://aiclub.ics.uci.edu, 1
+https://archive.ics.uci.edu, 1
+https://asterix.ics.uci.edu, 1
+https://cbcl.ics.uci.edu, 136
+https://chenli.ics.uci.edu, 9
+https://cml.ics.uci.edu, 156
+https://code.ics.uci.edu, 11
+https://cradl.ics.uci.edu, 9
+https://create.ics.uci.edu, 6
+https://cwicsocal18.ics.uci.edu, 9
+https://cyberclub.ics.uci.edu, 15
+https://dgillen.ics.uci.edu, 19
+https://duttgroup.ics.uci.edu, 102
+https://emj.ics.uci.edu, 43
+https://evoke.ics.uci.edu, 1891
+https://futurehealth.ics.uci.edu, 1
+https://grape.ics.uci.edu, 2671
+https://hack.ics.uci.edu, 1
+https://hai.ics.uci.edu, 1
+https://iasl.ics.uci.edu, 2
+https://industryshowcase.ics.uci.edu, 23
+https://intranet.ics.uci.edu, 115
+https://ipf.ics.uci.edu, 2
+https://isg.ics.uci.edu, 102
+https://jgarcia.ics.uci.edu, 23
+https://keys.ics.uci.edu, 2
+https://luci.ics.uci.edu, 3
+https://malek.ics.uci.edu, 1
+https://mcs.ics.uci.edu, 29
+https://mdogucu.ics.uci.edu, 1
+https://mds.ics.uci.edu, 11
+https://mhcid.ics.uci.edu, 8
+https://mse.ics.uci.edu, 2
+https://mswe.ics.uci.edu, 16
+https://mt-live.ics.uci.edu, 1786
+https://nalini.ics.uci.edu, 6
+https://ngs.ics.uci.edu, 1348
+https://redmiles.ics.uci.edu, 4
+https://scale.ics.uci.edu, 1
+https://sdcl.ics.uci.edu, 1
+https://seal.ics.uci.edu, 1
+https://sli.ics.uci.edu, 16
+https://statconsulting.ics.uci.edu, 5
+https://student-council.ics.uci.edu, 1
+https://studentcouncil.ics.uci.edu, 3
+https://support.ics.uci.edu, 4
+https://swiki.ics.uci.edu, 21
+https://tad.ics.uci.edu, 3
+https://tippersweb.ics.uci.edu, 3
+https://transformativeplay.ics.uci.edu, 30
+https://ugradforms.ics.uci.edu, 3
+https://unite.ics.uci.edu, 10
+https://wics.ics.uci.edu, 432
+https://www.ics.uci.edu, 1407
+---------------------------
