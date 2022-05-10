@@ -34,12 +34,6 @@ class Worker(Thread):
                 break
             parsed = urlparse(tbd_url)
             print('Scraping', tbd_url)
-
-            # this subdomain caused many problems - error codes, takes too long, no useful page content
-            # if parsed.netloc == 'swiki.ics.uci.edu':
-            #     self.reporter.addPage(tbd_url)
-            #     self.frontier.mark_url_complete(tbd_url)
-            #     continue
             
             # don't crawl too many similar URL's subsequently, to avoid loops
             # too many URL's with dates in a row tend to have little info

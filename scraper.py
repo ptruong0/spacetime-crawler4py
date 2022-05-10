@@ -17,7 +17,7 @@ def mostlySimilar(a, b):
     bParsed = urlparse(b)
 
     # if all matching except query or
-    # if all 
+    # if URL's are 95% similar
     return (aParsed.scheme == bParsed.scheme and aParsed.netloc == bParsed.netloc and \
     (aParsed.path == bParsed.path or (aParsed.path != '' and bParsed.path != '' and aParsed.path.split('/')[:-1] == bParsed.path.split('/')[:-1]))) or \
         (SequenceMatcher(None, a, b).ratio() >= 0.95)
@@ -176,7 +176,7 @@ def is_valid(url):
                         not (parsed.netloc == 'today.uci.edu' and parsed.path.startswith('/department/information_computer_sciences/')):
             return False
 
-        # skip media files, social media redirects, search/filter results
+        # skip media files, social media redirects, search/filter results, comment threads, etc
         if any(suffix in parsed.query for suffix in ['ical', 'png', 'jpg', 'gif', 'pdf', 'facebook', 'zip','twitter', 'difftype', 'filter', 'odc', 'replyto']) or url.endswith('.Z'):
             return False
 
